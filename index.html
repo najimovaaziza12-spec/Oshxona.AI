@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Oshxona.AI — Aqlli Ro'zg'or va Retseptlar Platformasi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- YUQORI PANEL (HEADER) -->
+    <header class="top-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">🍳</div>
+                <div>
+                    <h1 class="logo-text">Oshxona<span>.AI</span></h1>
+                    <p class="logo-sub" id="subLogoText">Aqlli ro'zg'or va AI retseptlar</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <!-- TIL ALMASHTIRGICH (UZ | RU | EN) -->
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="uz">UZ</button>
+                    <button class="lang-btn" data-lang="ru">RU</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+
+                <!-- TUN / KUN REJIMI TUGMASI -->
+                <button class="icon-action-btn" id="themeToggleBtn" title="Tun / Kun rejimi">
+                    <span id="themeIcon">🌙</span>
+                </button>
+
+                <!-- FOYDALANUVCHI PROFili -->
+                <button class="user-greeting-btn" id="userProfileBtn" title="Ismni o'zgartirish">
+                    <span id="headerGreetingText">Salom, Mehmon!</span>
+                    <span class="edit-pencil">✎</span>
+                </button>
+
+                <!-- QO'LLANMA -->
+                <button class="btn-guide" id="openGuideBtn">
+                    <span>📖</span> <span data-i18n="guide">Qo'llanma</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ASOSIY TO'LIQ EKRANLI ISH MAYDONI -->
+    <main class="main-workspace">
+        
+        <!-- 1-BO'LIM: MUZLATGICH VA OSHXONA LENS -->
+        <section class="panel fridge-panel active-mobile-tab" id="tab-fridge">
+            <div class="panel-header">
+                <h2 data-i18n="fridgeTitle">🧊 Muzlatgichim</h2>
+                <button class="btn-text-danger" id="clearIngredientsBtn" data-i18n="clear">Tozalash</button>
+            </div>
+            <p class="panel-desc" data-i18n="fridgeDesc">Uyingizda bor mahsulotlarni belgilang yoki AI skanerdan foydalaning:</p>
+
+            <!-- OSHXONA LENS (AI RASM ORQALI ANIQLASH) -->
+            <div class="ai-lens-box">
+                <input type="file" id="lensFileInput" accept="image/*" hidden>
+                <button class="btn-ai-lens" id="triggerLensBtn">
+                    <span>📸</span> <span data-i18n="lensBtn">Oshxona Lens: Muzlatgichni rasmga olish</span>
+                </button>
+                <div id="lensStatus" class="lens-status"></div>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="ingredientSearch" placeholder="Mahsulot qidirish...">
+            </div>
+
+            <div class="category-chips" id="categoryChips">
+                <button class="chip active" data-cat="all" data-i18n="catAll">Barchasi</button>
+                <button class="chip" data-cat="sabzavot" data-i18n="catVeg">Sabzavotlar</button>
+                <button class="chip" data-cat="gosht" data-i18n="catMeat">Go'sht va Tuxum</button>
+                <button class="chip" data-cat="sut" data-i18n="catMilk">Sut mahsulotlari</button>
+                <button class="chip" data-cat="don" data-i18n="catGrain">Don va Un</button>
+            </div>
+
+            <div class="ingredients-grid" id="ingredientsGrid"></div>
+        </section>
+
+        <!-- 2-BO'LIM: AI RETSEPTLAR -->
+        <section class="panel recipes-panel" id="tab-recipes">
+            <div class="panel-header recipes-top-bar">
+                <div>
+                    <h2 data-i18n="recipesTitle">🍲 Tayyorlash mumkin bo'lgan taomlar</h2>
+                    <p class="panel-desc" id="recipeStatusText">Mahsulotlarni tanlang</p>
+                </div>
+                
+                <div class="filters-row">
+                    <button class="filter-toggle-btn" id="onlyReadyToggle" data-i18n="onlyReady">✅ Faqat tayyorlari</button>
+                    <button class="filter-toggle-btn" id="onlyFavoritesToggle">❤️ Sevimlilar (<span id="favCount">0</span>)</button>
+                    <select id="mealFilter" class="custom-select">
+                        <option value="all" data-i18n="mealAll">Barcha vaqtlar</option>
+                        <option value="Nonushta" data-i18n="mealBreak">Nonushta</option>
+                        <option value="Tushlik" data-i18n="mealLunch">Tushlik</option>
+                        <option value="Kechki ovqat" data-i18n="mealDinner">Kechki ovqat</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KUNLIK KALORIYA NAZORATI -->
+            <div class="calorie-tracker-bar">
+                <div class="cal-info">
+                    <span data-i18n="calText">🔥 Bugungi kaloriya:</span>
+                    <strong id="dailyCaloriesTotal">0 kkal</strong>
+                </div>
+                <button class="btn-reset-cal" id="resetCalBtn" data-i18n="reset">Nollash</button>
+            </div>
+
+            <div class="recipes-grid" id="recipesGrid"></div>
+        </section>
+
+        <!-- 3-BO'LIM: OILAVIY BOZORLIK RO'YXATI -->
+        <section class="panel shopping-panel" id="tab-shopping">
+            <div class="panel-header">
+                <h2 data-i18n="shoppingTitle">🛒 Bozorlik ro'yxati</h2>
+                <span class="badge-orange" id="shoppingCount">0 ta</span>
+            </div>
+            <p class="panel-desc" data-i18n="shoppingDesc">Yetishmayotgan mahsulotlar:</p>
+
+            <div class="add-shopping-form">
+                <input type="text" id="customShoppingInput" placeholder="Yangi mahsulot...">
+                <button id="addShoppingBtn">+</button>
+            </div>
+
+            <ul class="shopping-list" id="shoppingList"></ul>
+
+            <div class="shopping-footer">
+                <button class="btn-secondary-full" id="shareShoppingBtn" style="margin-bottom: 8px;" data-i18n="copyList">📤 Ro'yxatni nusxalash</button>
+                <button class="btn-secondary-full" id="clearPurchasedBtn" data-i18n="clearDone">Sotib olinganlarni o'chirish</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MOBIL PASTKI MENYU -->
+    <nav class="mobile-bottom-nav">
+        <button class="nav-item active" data-target="tab-fridge">
+            <span class="nav-icon">🧊</span>
+            <span class="nav-label" data-i18n="navFridge">Muzlatgich</span>
+        </button>
+        <button class="nav-item" data-target="tab-recipes">
+            <span class="nav-icon">🍲</span>
+            <span class="nav-label" data-i18n="navRecipes">Retseptlar</span>
+        </button>
+        <button class="nav-item" data-target="tab-shopping">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label" data-i18n="navShop">Bozorlik</span>
+        </button>
+    </nav>
+
+    <!-- FOOTER -->
+    <main-footer class="main-footer">
+        <p>© 2026 <strong>Oshxona.AI</strong>. Designed & Developed by <strong>Najimov Abdushukur</strong> (Founder & Lead Developer)</p>
+    </main-footer>
+
+    <!-- ISM KIRITISH MODALI -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card auth-card">
+            <button class="modal-close" id="closeAuthModal">&times;</button>
+            <div class="guide-header" style="text-align: center; margin-bottom: 20px;">
+                <span class="guide-badge" data-i18n="cabinet">Shaxsiy Kabinet</span>
+                <h2 data-i18n="welcomeTitle">Xush kelibsiz!</h2>
+                <p class="panel-desc" data-i18n="welcomeDesc">Ismingizni kiriting:</p>
+            </div>
+            <div class="auth-form">
+                <input type="text" id="authNameInput" placeholder="Ismingiz..." class="auth-input">
+                <button class="btn-view-recipe" id="saveAuthBtn" style="width:100%; padding: 14px;" data-i18n="save">Saqlash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RETSEPT VA VIDEO MODALI -->
+    <div class="modal-overlay" id="recipeModal">
+        <div class="modal-card modal-large">
+            <button class="modal-close" id="closeRecipeModal">&times;</button>
+            <div id="recipeModalContent"></div>
+        </div>
+    </div>
+
+    <!-- QO'LLANMA MODALI -->
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal-card">
+            <button class="modal-close" id="closeGuideModal">&times;</button>
+            <div class="guide-header">
+                <span class="guide-badge" data-i18n="guideBadge">Qo'llanma</span>
+                <h2 data-i18n="guideTitleText">Oshxona.AI haqida</h2>
+            </div>
+            
+            <div class="guide-body">
+                <div class="guide-purpose">
+                    <h4 data-i18n="gPurposeTitle">🎯 Maqsad:</h4>
+                    <p data-i18n="gPurposeDesc">Uydagi mahsulotlardan oson va tez ovqat pishirish.</p>
+                </div>
+
+                <div class="creator-box">
+                    <div class="creator-avatar">👨‍💻</div>
+                    <div>
+                        <span class="creator-role">Founder & Lead Developer</span>
+                        <h3>Najimov Abdushukur</h3>
+                        <p data-i18n="creatorDesc">Zamonaviy aqlli oshxona yordamchisi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
