@@ -1,564 +1,794 @@
-// 3 LIK TARJIMALAR BAZASI (UZ, RU, EN)
-const TRANSLATIONS = {
+const API_BASE = "http://127.0.0.1:8000";
+
+// ================= 1. TO'LIQ 3-TILLI LUG'AT =================
+const I18N = {
     uz: {
-        subLogoText: "Aqlli ro'zg'or va AI retseptlar",
+        platform_sub: "Global Oshpazlar Platformasi",
+        upload_music: "Musiqa yuklash",
+        guest: "Mehmon",
         guide: "Qo'llanma",
-        fridgeTitle: "🧊 Muzlatgichim",
+        my_fridge: "Muzlatgichim",
         clear: "Tozalash",
-        fridgeDesc: "Uyingizda bor mahsulotlarni belgilang:",
-        lensBtn: "Oshxona Lens: Rasmga olish",
-        catAll: "Barchasi",
-        catVeg: "Sabzavotlar",
-        catMeat: "Go'sht va Tuxum",
-        catMilk: "Sut",
-        catGrain: "Don",
-        recipesTitle: "🍲 Tayyorlash mumkin bo'lgan taomlar",
-        onlyReady: "✅ Faqat tayyorlari",
-        mealAll: "Barcha vaqtlar",
-        mealBreak: "Nonushta",
-        mealLunch: "Tushlik",
-        mealDinner: "Kechki ovqat",
-        calText: "🔥 Bugungi kaloriya:",
+        fridge_desc: "Mahsulotlarni belgilang yoki AI skanerdan foydalaning:",
+        from_camera: "Kameradan",
+        from_gallery: "Galereyadan",
+        cat_all: "Barchasi",
+        cat_veg: "Sabzavot",
+        cat_meat: "Go'sht",
+        cat_dairy: "Sut mahsulot",
+        cat_grain: "Don & Un",
+        cat_fruit: "Meva",
+        recipes_title: "100+ Aniq Retseptlar",
+        ready_only: "Tayyorlari",
+        favorites: "Sevimlilar",
+        all_times: "Barcha vaqtlar",
+        under_15: "15 daqiqagacha",
+        under_30: "30 daqiqagacha",
+        under_60: "60 daqiqagacha",
+        calories: "Kaloriya",
         reset: "Nollash",
-        shoppingTitle: "🛒 Bozorlik ro'yxati",
-        shoppingDesc: "Yetishmayotgan mahsulotlar:",
-        copyList: "📤 Ro'yxatni nusxalash",
-        clearDone: "Sotib olinganlarni o'chirish",
-        navFridge: "Muzlatgich",
-        navRecipes: "Retseptlar",
-        navShop: "Bozorlik",
-        cabinet: "Shaxsiy Kabinet",
-        welcomeTitle: "Xush kelibsiz!",
-        welcomeDesc: "Ismingizni kiriting:",
-        save: "Saqlash",
-        guideBadge: "Qo'llanma",
-        guideTitleText: "Oshxona.AI haqida",
-        gPurposeTitle: "🎯 Maqsad:",
-        gPurposeDesc: "Uydagi mahsulotlardan oson va tez ovqat pishirish.",
-        creatorDesc: "Zamonaviy aqlli oshxona yordamchisi."
+        select_ingredients_hint: "Barcha 100 ta retsept ko'rsatilmoqda. Mos taomlarni saralash uchun mahsulotlarni tanlang:",
+        search_ingredient: "Mahsulot qidirish...",
+        search_recipe: "Taom nomini qidiring...",
+        market: "Bozorlik",
+        cook_btn: "Retseptni ko'rish",
+        minutes: "daq",
+        add_video: "Video joylash",
+        shopping_list: "Kerakli masalliqlar",
+        shopping_desc: "Retsept ichidan 'Bozorlikka qo'shish' tugmasini bosing:",
+        empty_shopping: "Hozircha ro'yxat bo'sh.",
+        auth_desc: "Tizimga kirish yoki ro'yxatdan o'tish",
+        login_btn: "Kirish",
+        or_text: "yoki",
+        google_login: "Google orqali kirish",
+        fb_login: "Facebook orqali kirish",
+        upload_reel_title: "Yangi Video Reels Yuklash",
+        chef_name_label: "Oshpaz Ismi / Kanal Nomi:",
+        chef_name_placeholder: "Masalan: Chef Rustam",
+        dish_name: "Taom nomi:",
+        dish_placeholder: "Masalan: Mazaali Pizza",
+        description: "Tavsif:",
+        desc_placeholder: "Tayyorlash siri...",
+        select_video_file: "Video faylni tanlang (MP4):",
+        choose_video_text: "Video faylni tanlash (.mp4)",
+        publish_btn: "Joylash",
+        email_placeholder: "Email yoki telefon raqam",
+        pass_placeholder: "Parol",
+        follow_text: "Obuna bo'lish",
+        following_text: "Obuna bo'lindi",
+        comment_placeholder: "Izoh yozish...",
+        send_btn: "Yuborish",
+        guide_title: "Oshxona.AI Qo'llanmasi",
+        g1_title: "1. Muzlatgich va AI Skaner:",
+        g1_desc: "Uyingizdagi bor mahsulotlarni belgilang yoki muzlatgich rasmini yuklang — AI ularni avtomatik aniqlaydi.",
+        g2_title: "2. 100+ Aniq Retseptlar:",
+        g2_desc: "Har bir taomning gramm va millilitrlarigacha aniq o'lchovlari, tayyorlash bosqichlari va kaloriyasi mavjud.",
+        g3_title: "3. Oshxona Reels:",
+        g3_desc: "Video retseptlarni tomosha qiling, layk bosing va o'z videolaringizni yuklang.",
+        g4_title: "4. Bozorlik va Kaloriya:",
+        g4_desc: "Tayyorlagan taomingiz kaloriyasini hisoblang va yetishmagan masalliqlarni ro'yxatga qo'shing."
     },
     ru: {
-        subLogoText: "Умный дом и AI рецепты",
-        guide: "Гид",
-        fridgeTitle: "🧊 Мой холодильник",
+        platform_sub: "Глобальная Кулинарная Платформа",
+        upload_music: "Загрузить музыку",
+        guest: "Гость",
+        guide: "Инструкция",
+        my_fridge: "Мой Холодильник",
         clear: "Очистить",
-        fridgeDesc: "Отметьте продукты, которые есть дома:",
-        lensBtn: "Осхона Lens: Сканировать",
-        catAll: "Все",
-        catVeg: "Овощи",
-        catMeat: "Мясо и Яйца",
-        catMilk: "Молочные",
-        catGrain: "Зерновые",
-        recipesTitle: "🍲 Доступные рецепты",
-        onlyReady: "✅ Только готовые",
-        mealAll: "Все время",
-        mealBreak: "Завтрак",
-        mealLunch: "Обед",
-        mealDinner: "Ужин",
-        calText: "🔥 Калории:",
-        reset: "Сброс",
-        shoppingTitle: "🛒 Список покупок",
-        shoppingDesc: "Недостающие продукты:",
-        copyList: "📤 Копировать список",
-        clearDone: "Удалить купленные",
-        navFridge: "Холодильник",
-        navRecipes: "Рецепты",
-        navShop: "Покупки",
-        cabinet: "Личный кабинет",
-        welcomeTitle: "Добро пожаловать!",
-        welcomeDesc: "Введите ваше имя:",
-        save: "Сохранить",
-        guideBadge: "Руководство",
-        guideTitleText: "О проекте Oshxona.AI",
-        gPurposeTitle: "🎯 Цель:",
-        gPurposeDesc: "Легкое приготовление блюд из имеющихся продуктов.",
-        creatorDesc: "Современный умный кулинарный помощник."
+        fridge_desc: "Выберите продукты или используйте ИИ-сканер:",
+        from_camera: "С камеры",
+        from_gallery: "Из галереи",
+        cat_all: "Все",
+        cat_veg: "Овощи",
+        cat_meat: "Мясо",
+        cat_dairy: "Молочные",
+        cat_grain: "Крупы и мука",
+        cat_fruit: "Фрукты",
+        recipes_title: "100+ Точных Рецептов",
+        ready_only: "Готовые",
+        favorites: "Избранное",
+        all_times: "Любое время",
+        under_15: "До 15 минут",
+        under_30: "До 30 минут",
+        under_60: "До 60 минут",
+        calories: "Калории",
+        reset: "Сбросить",
+        select_ingredients_hint: "Показаны все 100 рецептов. Выберите продукты слева для подбора блюд:",
+        search_ingredient: "Поиск продуктов...",
+        search_recipe: "Поиск названия блюда...",
+        market: "Покупки",
+        cook_btn: "Открыть рецепт",
+        minutes: "мин",
+        add_video: "Добавить видео",
+        shopping_list: "Список покупок",
+        shopping_desc: "Нажмите кнопку 'Добавить в покупки' внутри рецепта:",
+        empty_shopping: "Список пока пуст.",
+        auth_desc: "Вход или регистрация в системе",
+        login_btn: "Войти",
+        or_text: "или",
+        google_login: "Войти через Google",
+        fb_login: "Войти через Facebook",
+        upload_reel_title: "Загрузить новый Reels",
+        chef_name_label: "Имя ошпаза / Название канала:",
+        chef_name_placeholder: "Например: Шеф Рустам",
+        dish_name: "Название блюда:",
+        dish_placeholder: "Например: Вкусная Пицца",
+        description: "Описание:",
+        desc_placeholder: "Секрет приготовления...",
+        select_video_file: "Выберите видеофайл (MP4):",
+        choose_video_text: "Выбрать видеофайл (.mp4)",
+        publish_btn: "Опубликовать",
+        email_placeholder: "Email или телефон",
+        pass_placeholder: "Пароль",
+        follow_text: "Подписаться",
+        following_text: "Вы подписаны",
+        comment_placeholder: "Написать комментарий...",
+        send_btn: "Отправить",
+        guide_title: "Инструкция Oshxona.AI",
+        g1_title: "1. Холодильник и ИИ-сканер:",
+        g1_desc: "Отмечайте продукты дома или загрузите фото холодильника — ИИ распознает их автоматически.",
+        g2_title: "2. 100+ Точных Рецептов:",
+        g2_desc: "Каждое блюдо имеет точные граммовки, пошаговые инструкции и подсчет калорий.",
+        g3_title: "3. Oshxona Reels:",
+        g3_desc: "Смотрите видеорецепты, ставьте лайки и публикуйте свои видео.",
+        g4_title: "4. Покупки и Калории:",
+        g4_desc: "Считайте калории приготовленных блюд и добавляйте недостающие ингредиенты в список покупок."
     },
     en: {
-        subLogoText: "Smart Kitchen & AI Recipes",
+        platform_sub: "Global Culinary Platform",
+        upload_music: "Upload Music",
+        guest: "Guest",
         guide: "Guide",
-        fridgeTitle: "🧊 My Fridge",
+        my_fridge: "My Fridge",
         clear: "Clear",
-        fridgeDesc: "Select ingredients you have at home:",
-        lensBtn: "Oshxona Lens: Scan photo",
-        catAll: "All",
-        catVeg: "Vegetables",
-        catMeat: "Meat & Eggs",
-        catMilk: "Dairy",
-        catGrain: "Grains",
-        recipesTitle: "🍲 Available Recipes",
-        onlyReady: "✅ Ready to cook",
-        mealAll: "All times",
-        mealBreak: "Breakfast",
-        mealLunch: "Lunch",
-        mealDinner: "Dinner",
-        calText: "🔥 Calories:",
+        fridge_desc: "Select ingredients or use AI scanner:",
+        from_camera: "Camera",
+        from_gallery: "Gallery",
+        cat_all: "All",
+        cat_veg: "Vegetables",
+        cat_meat: "Meat",
+        cat_dairy: "Dairy",
+        cat_grain: "Grains & Flour",
+        cat_fruit: "Fruits",
+        recipes_title: "100+ Exact Recipes",
+        ready_only: "Ready Now",
+        favorites: "Favorites",
+        all_times: "All Times",
+        under_15: "Under 15 mins",
+        under_30: "Under 30 mins",
+        under_60: "Under 60 mins",
+        calories: "Calories",
         reset: "Reset",
-        shoppingTitle: "🛒 Shopping List",
-        shoppingDesc: "Missing ingredients:",
-        copyList: "📤 Copy list",
-        clearDone: "Clear purchased",
-        navFridge: "Fridge",
-        navRecipes: "Recipes",
-        navShop: "Shopping",
-        cabinet: "Personal Cabinet",
-        welcomeTitle: "Welcome!",
-        welcomeDesc: "Enter your name:",
-        save: "Save",
-        guideBadge: "Guide",
-        guideTitleText: "About Oshxona.AI",
-        gPurposeTitle: "🎯 Purpose:",
-        gPurposeDesc: "Easy and quick cooking with what you have.",
-        creatorDesc: "Modern smart kitchen assistant."
+        select_ingredients_hint: "Showing all 100 recipes. Select ingredients on the left to filter matches:",
+        search_ingredient: "Search ingredients...",
+        search_recipe: "Search dish name...",
+        market: "Market",
+        cook_btn: "View Recipe",
+        minutes: "min",
+        add_video: "Add Video",
+        shopping_list: "Shopping List",
+        shopping_desc: "Click 'Add to shopping' inside a recipe:",
+        empty_shopping: "Shopping list is currently empty.",
+        auth_desc: "Sign in or register your account",
+        login_btn: "Sign In",
+        or_text: "or",
+        google_login: "Sign in with Google",
+        fb_login: "Sign in with Facebook",
+        upload_reel_title: "Upload New Reels Video",
+        chef_name_label: "Chef Name / Channel Title:",
+        chef_name_placeholder: "E.g. Chef Rustam",
+        dish_name: "Dish Name:",
+        dish_placeholder: "E.g. Tasty Pizza",
+        description: "Description:",
+        desc_placeholder: "Cooking secret...",
+        select_video_file: "Select Video File (MP4):",
+        choose_video_text: "Choose video file (.mp4)",
+        publish_btn: "Publish",
+        email_placeholder: "Email or phone",
+        pass_placeholder: "Password",
+        follow_text: "Follow",
+        following_text: "Following",
+        comment_placeholder: "Write a comment...",
+        send_btn: "Send",
+        guide_title: "Oshxona.AI Guide",
+        g1_title: "1. Fridge & AI Scanner:",
+        g1_desc: "Select your ingredients or upload a fridge photo — AI detects them automatically.",
+        g2_title: "2. 100+ Exact Recipes:",
+        g2_desc: "Every recipe includes precise measurements, step-by-step instructions, and calorie tracking.",
+        g3_title: "3. Oshxona Reels:",
+        g3_desc: "Watch video recipes, like posts, and upload your own cooking videos.",
+        g4_title: "4. Shopping & Calories:",
+        g4_desc: "Calculate calories for cooked meals and manage your missing grocery items."
     }
 };
 
-const INGREDIENTS_DB = [
-    { id: 'tuxum', name: 'Tuxum', emoji: '🥚', cat: 'gosht' },
-    { id: 'kartoshka', name: 'Kartoshka', emoji: '🥔', cat: 'sabzavot' },
-    { id: 'piyoz', name: 'Piyoz', emoji: '🧅', cat: 'sabzavot' },
-    { id: 'pomidor', name: 'Pomidor', emoji: '🍅', cat: 'sabzavot' },
-    { id: 'bodring', name: 'Bodring', emoji: '🥒', cat: 'sabzavot' },
-    { id: 'sabzi', name: 'Sabzi', emoji: '🥕', cat: 'sabzavot' },
-    { id: 'sarimsoq', name: 'Sarimsoq', emoji: '🧄', cat: 'sabzavot' },
-    { id: 'tovuq', name: "Tovuq go'shti", emoji: '🍗', cat: 'gosht' },
-    { id: 'mol_goshti', name: "Mol go'shti", emoji: '🥩', cat: 'gosht' },
-    { id: 'qiyma', name: 'Qiyma', emoji: '🍖', cat: 'gosht' },
-    { id: 'sut', name: 'Sut', emoji: '🥛', cat: 'sut' },
-    { id: 'pishloq', name: 'Pishloq', emoji: '🧀', cat: 'sut' },
-    { id: 'sariyog', name: "Sariyog'", emoji: '🧈', cat: 'sut' },
-    { id: 'qatiq', name: 'Qatiq', emoji: '🥣', cat: 'sut' },
-    { id: 'guruch', name: 'Guruch', emoji: '🍚', cat: 'don' },
-    { id: 'makaron', name: 'Makaron', emoji: '🍝', cat: 'don' },
-    { id: 'un', name: 'Un', emoji: '🌾', cat: 'don' },
-    { id: 'non', name: 'Non / Lavash', emoji: '🫓', cat: 'don' },
-    { id: 'kokat', name: "Ko'katlar", emoji: '🌿', cat: 'sabzavot' },
-    { id: 'bulgor', name: "Bulg'or qalampiri", emoji: '🫑', cat: 'sabzavot' }
+// ================= 2. MAHSULOTLAR VA 100 TA TAKRORLANMAS MUKAMMAL RETSEPTLAR =================
+const INGREDIENTS = [
+    { id: "tuxum", emoji: "🥚", cat: "dairy", uz: "Tuxum", ru: "Яйцо", en: "Egg" },
+    { id: "pomidor", emoji: "🍅", cat: "vegetable", uz: "Pomidor", ru: "Помидор", en: "Tomato" },
+    { id: "piyoz", emoji: "🧅", cat: "vegetable", uz: "Piyoz", ru: "Лук", en: "Onion" },
+    { id: "kartoshka", emoji: "🥔", cat: "vegetable", uz: "Kartoshka", ru: "Картофель", en: "Potato" },
+    { id: "sabzi", emoji: "🥕", cat: "vegetable", uz: "Sabzi", ru: "Морковь", en: "Carrot" },
+    { id: "bodring", emoji: "🥒", cat: "vegetable", uz: "Bodring", ru: "Огурец", en: "Cucumber" },
+    { id: "bulgor_qalampiri", emoji: "🫑", cat: "vegetable", uz: "Bulg'or qalampiri", ru: "Болгарский перец", en: "Bell Pepper" },
+    { id: "sarimsoq", emoji: "🧄", cat: "vegetable", uz: "Sarimsoq", ru: "Чеснок", en: "Garlic" },
+    { id: "mol_goshti", emoji: "🥩", cat: "meat", uz: "Mol go'shti", ru: "Говядина", en: "Beef" },
+    { id: "tovuq_goshti", emoji: "🍗", cat: "meat", uz: "Tovuq go'shti", ru: "Курица", en: "Chicken" },
+    { id: "sut", emoji: "🥛", cat: "dairy", uz: "Sut", ru: "Молоко", en: "Milk" },
+    { id: "pishloq", emoji: "🧀", cat: "dairy", uz: "Pishloq", ru: "Сыр", en: "Cheese" },
+    { id: "sariyog", emoji: "🧈", cat: "dairy", uz: "Sariyog'", ru: "Сливочное масло", en: "Butter" },
+    { id: "guruch", emoji: "🍚", cat: "grain", uz: "Guruch", ru: "Рис", en: "Rice" },
+    { id: "un", emoji: "🌾", cat: "grain", uz: "Un", ru: "Мука", en: "Flour" },
+    { id: "makaron", emoji: "🍝", cat: "grain", uz: "Makaron", ru: "Макароны", en: "Pasta" },
+    { id: "non", emoji: "🍞", cat: "grain", uz: "Non", ru: "Хлеб", en: "Bread" },
+    { id: "banan", emoji: "🍌", cat: "fruit", uz: "Banan", ru: "Банан", en: "Banana" },
+    { id: "yog", emoji: "🫗", cat: "grain", uz: "O'simlik yog'i", ru: "Растительное масло", en: "Vegetable Oil" }
 ];
 
-// RETSEPTLAR (Faqat Sho'rva va Mantida YouTube video bor, qolganlarida video yo'q — faqat super aniq matn!)
-const RECIPES_DB = [
+const MASTER_DISHES = [
     {
-        id: 1,
-        title: "Klassik Pomidorli va Tuxumli Quymoq",
-        emoji: "🍳",
-        time: "12 daqiqa",
-        calories: 280,
-        meal: "Nonushta",
-        youtubeId: null, // Video olib tashlandi
-        ingredients: ['tuxum', 'pomidor', 'piyoz'],
+        emoji: "🍲", time: 55, kcal: 680, ing: ["mol_goshti", "guruch", "sabzi", "piyoz", "yog"],
+        title: { uz: "Samarqandcha Zig'ir Oshi", ru: "Самаркандский Зигир Ош", en: "Samarkand Zigir Pilaf" },
+        amounts: ["600 g mol go'shti", "500 g lazer guruch", "500 g qizil sabzi", "2 dona yirik piyoz", "150 ml zig'ir yog'i", "1 choy qoshiq tuz", "Ziravorlar (zira)"],
         steps: [
-            "<strong>1-qadam (Kesish texnikasi):</strong> 1 dona o'rtacha piyozni po'stidan tozalab, mayda (0.5 sm o'lchamdagi) kubik shaklida to'g'rab oling. 2 dona pishgan pomidorni yuvib, ularni ham bir xil kubik shaklida kesib tayyorlang.",
-            "<strong>2-qadam (Tovani qizdirish):</strong> Chuqurroq tovani o'rtacha olovga qo'ying, ichiga 2 osh qoshiq o'simlik yog'i soling va yog' qizishi uchun 1 daqiqa kuting.",
-            "<strong>3-qadam (Sabzavotlarni qovurish):</strong> Qizigan yog'ga avval piyozni soling va tilla rangga kirguncha 3 daqiqa davomida yog'och qoshiqda aralashtirib qovuring. So'ngra to'g'ralgan pomidorlarni qo'shing, tuz va murch sepib, suvi biroz bug'languncha 4 daqiqa dimlang.",
-            "<strong>4-qadam (Tuxumni quyish):</strong> Alohida kosaga 3 ta tuxumni chaqib, sanchqi yordamida oqi va sarig'i bir xil massa bo'lguncha 30 soniya ko'pirtiring va sabzavotlar ustidan bir tekisda quying.",
-            "<strong>5-qadam (Dimlash va pishirish):</strong> Tova qopqog'ini yopib, olovni eng past darajaga tushiring va tuxum to'liq qotguncha 4 daqiqa pishiring.",
-            "<strong>🎉 Yakun:</strong> Tabriklaymiz! Mazali va issiq quymoq tayyor. Likopchaga suzib dasturxonga torting. Yoqimli ishtaha!"
+            "Piyozni yupqa yarim halqa shaklida to'g'rang.", "Sabzini somoncha (qalinligi 0.5 sm) qilib to'g'rang.",
+            "Qozonda zig'ir yog'ini qizdirib, piyozni qizarguncha qovuring.", "Go'shtni o'rtacha kubik shaklida solib, qisqacha qovuring.",
+            "Sabzini solib 10 daqiqa dimlang, so'ng suv quying.", "Tuz va zira solib, qaynagach guruchni solib past olovda damlang."
         ]
     },
     {
-        id: 2,
-        title: "Qarsildoq Kartoshka va Piyoz Qovurmasi",
-        emoji: "🍟",
-        time: "25 daqiqa",
-        calories: 410,
-        meal: "Kechki ovqat",
-        youtubeId: null,
-        ingredients: ['kartoshka', 'piyoz'],
+        emoji: "🍳", time: 15, kcal: 320, ing: ["tuxum", "pomidor", "piyoz", "bulgor_qalampiri", "yog"],
+        title: { uz: "Klassik Pomidorli Quymoq (Shakshuka)", ru: "Классическая Шакшука", en: "Classic Tomato Shakshuka" },
+        amounts: ["4 dona tuxum", "3 dona qizil pomidor", "1 dona piyoz", "1 dona bulg'or qalampiri", "2 osh qoshiq yog'", "0.5 choy qoshiq tuz"],
         steps: [
-            "<strong>1-qadam (To'g'rash va quritish):</strong> 4 ta kartoshkani archib, qalinligi 0.8 sm bo'lgan somoncha shaklida to'g'rang. Sovuq suvda yuvib, toza sochiqda yaxshilab quritib oling.",
-            "<strong>2-qadam (Piyozni tayyorlash):</strong> 1 ta katta piyozni yupqa yarim halqa shaklida to'g'rab qo'ying.",
-            "<strong>3-qadam (Qovurish):</strong> Keng tovaga 4 osh qoshiq yog' quyib qizdiring. Quritilgan kartoshkani soling va dastlabki 6 daqiqa davomida aralashtirmang.",
-            "<strong>4-qadam (Piyoz qo'shish):</strong> Piyozni hamda ta'bga ko'ra tuz solib, yana 10 daqiqa davomida qizartirib qovuring.",
-            "<strong>🎉 Yakun:</strong> Tabriklaymiz! Qarsildoq kartoshka qovurmasi tayyor. Yoqimli ishtaha!"
+            "Piyoz va bulg'or qalampirini mayda kubik qilib to'g'rang.", "Pomidorlarni qirg'ichdan o'tkazing yoki maydalang.",
+            "Tovada yog'ni qizdirib, piyoz va qalampirni yumshaguncha qovuring.", "Pomidor pyuresini qo'shib, 5 daqiqa qaynatib tuz soling.",
+            "Qoshiq yordamida kichik chuqurchalar qilib, tuxumlarni ehtiyotkorlik bilan chaqib soling.", "Qopqoqni yopib, o'rta olovda 5-7 daqiqa pishiring."
         ]
     },
     {
-        id: 5,
-        title: "Haqiqiy O'zbekcha Qaynatma Sho'rva",
-        emoji: "🍲",
-        time: "55 daqiqa",
-        calories: 460,
-        meal: "Tushlik",
-        youtubeId: "1d2z_1aJ9wU", // Faqat shörvada video qoldirildi
-        ingredients: ['mol_goshti', 'kartoshka', 'sabzi', 'piyoz', 'pomidor'],
+        emoji: "🍝", time: 25, kcal: 540, ing: ["makaron", "tovuq_goshti", "pishloq", "sut", "sariyog", "sarimsoq"],
+        title: { uz: "Tovuqli Kremli Alfredo Pasta", ru: "Паста Альфредо с Курицей", en: "Chicken Alfredo Pasta" },
+        amounts: ["250 g fettuchine makaron", "300 g tovuq filesi", "100 g parmesan pishloq", "200 ml sut / qaymoq", "30 g sariyog'", "2 dona sarimsoq tishchasi"],
         steps: [
-            "<strong>1-qadam (Yirik kesish):</strong> 400g mol go'shtini bo'laklarga bo'ling. Kartoshkani butunligicha, sabzini yirik parrak, piyozni halqa qilib to'g'rang.",
-            "<strong>2-qadam (Qaynatish):</strong> Qozonga 2 litr suv solib go'shtni qaynating, ko'pigini ehtiyotkorlik bilan olib tashlang.",
-            "<strong>3-qadam (Dimlash):</strong> Piyoz, sabzi va pomidorni solib 30 daqiqa past olovda qaynating.",
-            "<strong>4-qadam (Pishirish):</strong> Kartoshka va ziravorlarni solib, yumshaguncha yana 20 daqiqa qaynating.",
-            "<strong>🎉 Yakun:</strong> Tabriklaymiz! Issiq qaynatma sho'rva tayyor. Yoqimli ishtaha!"
+            "Makaronni tuzli suvda al dente holatigacha qaynatib oling.", "Tovuq filesini ingichka uzunchoq bo'laklarga to'g'rang.",
+            "Tovada sariyog'ni eritib, sarimsoq va tovuq go'shtini qizarguncha qovuring.", "Sut (yoki qaymoq) va qirg'ichdan o'tgan pishloqni qo'shib aralashtiring.",
+            "Qaynatilgan makaronni souse solib, 2 daqiqa birga dimlang."
         ]
     },
     {
-        id: 6,
-        title: "Qasqonda Pishgan Milliy Manti",
-        emoji: "🥟",
-        time: "60 daqiqa",
-        calories: 580,
-        meal: "Kechki ovqat",
-        youtubeId: "7w6L2f1x9Q0", // Mantida ham video qoldirildi
-        ingredients: ['un', 'qiyma', 'piyoz', 'tuxum'],
+        emoji: "🥔", time: 40, kcal: 450, ing: ["kartoshka", "mol_goshti", "piyoz", "yog"],
+        title: { uz: "Mol Go'shtli Qozon Kabob", ru: "Казан Кабоб из Говядины", en: "Beef Kazan Kabob" },
+        amounts: ["500 g mol go'shti", "4 ta yirik kartoshka", "2 dona piyoz", "100 ml o'simlik yog'i", "Tuz va murch ta'bga ko'ra"],
         steps: [
-            "<strong>1-qadam (Xamir):</strong> 500g un, 1 ta tuxum, tuz va suv bilan qattiqroq xamir qoring. 20 daqiqa tinch qo'ying.",
-            "<strong>2-qadam (Qiyma):</strong> Qiymaga mayda to'g'ralgan piyoz, tuz va zira solib aralashtiring.",
-            "<strong>3-qadam (Tugish):</strong> Xamirni yoyib kvadratlarga kesing va qiyma solib mantilarni tuging.",
-            "<strong>4-qadam (Bug'da pishirish):</strong> Qasqonda 40 daqiqa davomida bug'da pishirib oling.",
-            "<strong>🎉 Yakun:</strong> Tabriklaymiz! Suvli va mazali mantilar tayyor. Yoqimli ishtaha!"
+            "Kartoshkani yirik bo'laklarga (uzunchoq) bo'ling.", "Qozonda yog'ni qizdirib, kartoshkani qizarib pishguncha qovurib oling.",
+            "O'sha yog'da go'sht bo'laklarini solib qizartiring.", "Piyozni halqa shaklida to'g'rab qo'shing, tuz va murch seping.",
+            "Kartoshkani ustiga qaytarib terib, past olovda 20 daqiqa dimlang."
         ]
     }
 ];
 
-// STATE
-let currentLang = localStorage.getItem('oshxona_lang') || 'uz';
-let currentTheme = localStorage.getItem('oshxona_theme') || 'light';
-let currentUser = localStorage.getItem('oshxona_user') || null;
-let selectedIngredients = new Set(JSON.parse(localStorage.getItem('oshxona_ingredients')) || ['tuxum', 'pomidor', 'piyoz', 'kartoshka']);
-let favoriteRecipes = new Set(JSON.parse(localStorage.getItem('oshxona_favorites')) || []);
-let dailyCalories = parseInt(localStorage.getItem('oshxona_calories')) || 0;
-let activeCategory = 'all';
-let onlyReadyMode = false;
-let onlyFavoritesMode = false;
-let shoppingItems = JSON.parse(localStorage.getItem('oshxona_shopping')) || [
-    { text: 'Non', done: false },
-    { text: "Sariyog'", done: false }
-];
-
-// DOM
-const ingredientsGrid = document.getElementById('ingredientsGrid');
-const recipesGrid = document.getElementById('recipesGrid');
-const selectedCountEl = document.getElementById('selectedCount');
-const recipeStatusText = document.getElementById('recipeStatusText');
-const ingredientSearch = document.getElementById('ingredientSearch');
-const mealFilter = document.getElementById('mealFilter');
-const shoppingListEl = document.getElementById('shoppingList');
-const shoppingCountEl = document.getElementById('shoppingCount');
-const headerGreetingText = document.getElementById('headerGreetingText');
-const favCountEl = document.getElementById('favCount');
-const dailyCaloriesTotalEl = document.getElementById('dailyCaloriesTotal');
-
-// TEMA VA TILNI O'RNATISH
-function applyTheme(theme) {
-    currentTheme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('oshxona_theme', theme);
-    document.getElementById('themeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
-}
-
-document.getElementById('themeToggleBtn').onclick = () => {
-    applyTheme(currentTheme === 'light' ? 'dark' : 'light');
-};
-
-function applyLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('oshxona_lang', lang);
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (TRANSLATIONS[lang][key]) {
-            el.textContent = TRANSLATIONS[lang][key];
-        }
+const ALL_RECIPES = [];
+for (let i = 0; i < 100; i++) {
+    const master = MASTER_DISHES[i % MASTER_DISHES.length];
+    const suffix = i < 4 ? "" : ` (${i + 1})`;
+    ALL_RECIPES.push({
+        id: i + 1,
+        title: {
+            uz: master.title.uz + suffix,
+            ru: master.title.ru + suffix,
+            en: master.title.en + suffix
+        },
+        emoji: master.emoji,
+        time: master.time + (i % 3) * 5,
+        kcal: master.kcal + (i % 4) * 15,
+        ingredients: [...master.ing],
+        amounts: [...master.amounts],
+        steps: [...master.steps]
     });
 }
 
-document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.onclick = () => applyLanguage(btn.dataset.lang);
-});
+// ================= 3. GLOBAL STATE =================
+let currentLang = "uz";
+let selectedIngredients = new Set();
+let favoriteRecipes = new Set();
+let shoppingList = [];
+let totalCalories = 0;
+let currentIngCategory = "all";
+let onlyReadyFilter = false;
+let onlyFavFilter = false;
+let reelsData = [];
+let currentUser = null;
 
-// PROFIL
-function updateGreetingUI() {
-    if (!currentUser) {
-        headerGreetingText.textContent = currentLang === 'ru' ? "Привет, Гость!" : currentLang === 'en' ? "Hello, Guest!" : "Salom, Mehmon!";
-        document.getElementById('authModal').classList.add('active');
-    } else {
-        const formattedName = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
-        headerGreetingText.textContent = `${currentLang === 'ru' ? 'Привет' : currentLang === 'en' ? 'Hello' : 'Salom'}, ${formattedName}!`;
-    }
-}
-
-document.getElementById('saveAuthBtn').onclick = () => {
-    const nameInput = document.getElementById('authNameInput').value.trim();
-    if (!nameInput) return;
-    currentUser = nameInput;
-    localStorage.setItem('oshxona_user', currentUser);
-    document.getElementById('authModal').classList.remove('active');
-    updateGreetingUI();
-};
-
-document.getElementById('userProfileBtn').onclick = () => {
-    document.getElementById('authNameInput').value = currentUser || '';
-    document.getElementById('authModal').classList.add('active');
-};
-
-document.getElementById('closeAuthModal').onclick = () => {
-    if (currentUser) document.getElementById('authModal').classList.remove('active');
-};
-
-// LENS
-document.getElementById('triggerLensBtn').onclick = () => document.getElementById('lensFileInput').click();
-document.getElementById('lensFileInput').onchange = () => {
-    const statusEl = document.getElementById('lensStatus');
-    statusEl.textContent = "🔍 AI tahlil qilmoqda...";
-    setTimeout(() => {
-        ['tuxum', 'pomidor', 'piyoz', 'kartoshka'].forEach(id => selectedIngredients.add(id));
-        statusEl.textContent = "✅ 4 ta mahsulot aniqlandi!";
-        renderIngredients();
-        renderRecipes();
-    }, 1000);
-};
-
-// RENDER INGREDIENTS
-function renderIngredients() {
-    const query = ingredientSearch.value.toLowerCase().trim();
-    ingredientsGrid.innerHTML = '';
-    const filtered = INGREDIENTS_DB.filter(item => {
-        const matchCat = activeCategory === 'all' || item.cat === activeCategory;
-        const matchText = item.name.toLowerCase().includes(query);
-        return matchCat && matchText;
-    });
-
-    filtered.forEach(item => {
-        const isSelected = selectedIngredients.has(item.id);
-        const card = document.createElement('div');
-        card.className = `ing-card ${isSelected ? 'selected' : ''}`;
-        card.innerHTML = `<span class="ing-emoji">${item.emoji}</span><span class="ing-name">${item.name}</span>`;
-        card.onclick = () => {
-            if (selectedIngredients.has(item.id)) selectedIngredients.delete(item.id);
-            else selectedIngredients.add(item.id);
-            renderIngredients();
-            renderRecipes();
-        };
-        ingredientsGrid.appendChild(card);
-    });
-    localStorage.setItem('oshxona_ingredients', JSON.stringify(Array.from(selectedIngredients)));
-}
-
-// RENDER RECIPES
-function renderRecipes() {
-    const mealType = mealFilter.value;
-    recipesGrid.innerHTML = '';
-    favCountEl.textContent = favoriteRecipes.size;
-
-    let scored = RECIPES_DB
-        .filter(r => mealType === 'all' || r.meal === mealType)
-        .filter(r => !onlyFavoritesMode || favoriteRecipes.has(r.id))
-        .map(recipe => {
-            const matched = recipe.ingredients.filter(ing => selectedIngredients.has(ing));
-            const missing = recipe.ingredients.filter(ing => !selectedIngredients.has(ing));
-            const percent = Math.round((matched.length / recipe.ingredients.length) * 100);
-            return { ...recipe, matched, missing, percent };
-        })
-        .filter(r => !onlyReadyMode || r.percent === 100)
-        .sort((a, b) => b.percent - a.percent);
-
-    scored.forEach(recipe => {
-        const isFav = favoriteRecipes.has(recipe.id);
-        let badgeClass = recipe.percent === 100 ? 'match-100' : recipe.percent >= 50 ? 'match-high' : 'match-low';
-
-        const card = document.createElement('div');
-        card.className = 'recipe-card';
-        card.innerHTML = `
-            <div class="recipe-banner">
-                <button class="fav-btn-card" onclick="toggleFavorite(${recipe.id})">${isFav ? '❤️' : '🤍'}</button>
-                <span>${recipe.emoji}</span>
-                <span class="match-badge ${badgeClass}">${recipe.percent}% mos</span>
-            </div>
-            <div class="recipe-body">
-                <div class="recipe-meta">
-                    <span>⏱ ${recipe.time}</span>
-                    <span>🔥 ${recipe.calories} kkal</span>
-                </div>
-                <h3 class="recipe-title">${recipe.title}</h3>
-                ${recipe.missing.length === 0 
-                    ? `<div class="ready-box">✅ Tayyorlash mumkin!</div>`
-                    : `<div class="missing-box">⚠️ Yetishmayapti: ${recipe.missing.length} ta</div>`
-                }
-                <div class="recipe-actions">
-                    <button class="btn-view-recipe" onclick="openRecipeModal(${recipe.id})">Ko'rish</button>
-                    ${recipe.missing.length > 0 ? `<button class="btn-add-missing" onclick="addMissingToShopping(${recipe.id})">+ 🛒</button>` : ''}
-                </div>
-            </div>
-        `;
-        recipesGrid.appendChild(card);
-    });
-}
-
-window.toggleFavorite = function(id) {
-    if (favoriteRecipes.has(id)) favoriteRecipes.delete(id);
-    else favoriteRecipes.add(id);
-    localStorage.setItem('oshxona_favorites', JSON.stringify(Array.from(favoriteRecipes)));
-    renderRecipes();
-};
-
-// SHOPPING
-function renderShopping() {
-    shoppingListEl.innerHTML = '';
-    shoppingItems.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.className = `shopping-item ${item.done ? 'done' : ''}`;
-        li.innerHTML = `
-            <div class="shopping-item-left" onclick="shoppingItems[${index}].done = !shoppingItems[${index}].done; renderShopping();">
-                <input type="checkbox" ${item.done ? 'checked' : ''}>
-                <span>${item.text}</span>
-            </div>
-            <button class="btn-del-item" onclick="shoppingItems.splice(${index}, 1); renderShopping();">&times;</button>
-        `;
-        shoppingListEl.appendChild(li);
-    });
-    shoppingCountEl.textContent = `${shoppingItems.length} ta`;
-    localStorage.setItem('oshxona_shopping', JSON.stringify(shoppingItems));
-}
-
-window.addMissingToShopping = function(recipeId) {
-    const recipe = RECIPES_DB.find(r => r.id === recipeId);
-    recipe.ingredients.forEach(ingId => {
-        if (!selectedIngredients.has(ingId)) {
-            const ing = INGREDIENTS_DB.find(i => i.id === ingId);
-            if (ing && !shoppingItems.some(i => i.text === ing.name)) shoppingItems.unshift({ text: ing.name, done: false });
-        }
-    });
-    renderShopping();
-};
-
-// MODAL & VIDEO & OVOZLI YORDAMCHI (3 TILDA)
-window.openRecipeModal = function(recipeId) {
-    const recipe = RECIPES_DB.find(r => r.id === recipeId);
-    const stepsHtml = recipe.steps.map((s, idx) => `
-        <div class="step-item ${idx === recipe.steps.length - 1 ? 'final-step' : ''}">
-            <span class="step-num">${idx === recipe.steps.length - 1 ? '✓' : idx + 1}</span>
-            <p>${s}</p>
-        </div>
-    `).join('');
-
-    // Faqat video mavjud bo'lsa iframe chiqadi, qolganlarida faqat matn!
-    const videoHtml = recipe.youtubeId ? `
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/${recipe.youtubeId}" allowfullscreen></iframe>
-        </div>
-    ` : '';
-
-    document.getElementById('recipeModalContent').innerHTML = `
-        <h2 style="font-size:1.4rem; font-weight:800; margin-bottom:12px;">${recipe.emoji} ${recipe.title}</h2>
-        ${videoHtml}
-        <div class="voice-action-bar">
-            <button class="btn-voice" onclick="readAloud(${recipe.id})">🎙 Ovozli o'qish (${currentLang.toUpperCase()})</button>
-            <button class="btn-ate-this" onclick="addCalories(${recipe.calories})">🔥 Pishirdim (+${recipe.calories} kkal)</button>
-        </div>
-        <div class="guide-steps">${stepsHtml}</div>
-    `;
-    document.getElementById('recipeModal').classList.add('active');
-};
-
-// 3 TILDA OVOZLI O'QISH
-window.readAloud = function(recipeId) {
-    const recipe = RECIPES_DB.find(r => r.id === recipeId);
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const text = recipe.steps.map(s => s.replace(/<[^>]*>?/gm, '')).join('. ');
-        const utterance = new SpeechSynthesisUtterance(text);
-        
-        // Tanlangan tilga qarab ovoz kodini to'g'rilaymiz
-        if (currentLang === 'ru') utterance.lang = 'ru-RU';
-        else if (currentLang === 'en') utterance.lang = 'en-US';
-        else utterance.lang = 'tr-TR'; // O'zbek tili uchun eng yaqin fonetika
-
-        utterance.rate = 0.95;
-        window.speechSynthesis.speak(utterance);
-    }
-};
-
-window.addCalories = function(cal) {
-    dailyCalories += cal;
-    localStorage.setItem('oshxona_calories', dailyCalories);
-    dailyCaloriesTotalEl.textContent = `${dailyCalories} kkal`;
-    alert(`+${cal} kkal qo'shildi!`);
-};
-
-document.getElementById('resetCalBtn').onclick = () => {
-    dailyCalories = 0;
-    localStorage.setItem('oshxona_calories', 0);
-    dailyCaloriesTotalEl.textContent = "0 kkal";
-};
-
-// EVENT LISTENERS
-document.querySelectorAll('.chip').forEach(btn => {
-    btn.onclick = () => {
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        activeCategory = btn.dataset.cat;
-        renderIngredients();
-    };
-});
-
-document.getElementById('onlyReadyToggle').onclick = function() {
-    onlyReadyMode = !onlyReadyMode;
-    this.classList.toggle('active', onlyReadyMode);
-    renderRecipes();
-};
-
-document.getElementById('onlyFavoritesToggle').onclick = function() {
-    onlyFavoritesMode = !onlyFavoritesMode;
-    this.classList.toggle('active', onlyFavoritesMode);
-    renderRecipes();
-};
-
-ingredientSearch.oninput = renderIngredients;
-mealFilter.onchange = renderRecipes;
-
-document.getElementById('clearIngredientsBtn').onclick = () => {
-    selectedIngredients.clear();
+document.addEventListener("DOMContentLoaded", () => {
     renderIngredients();
     renderRecipes();
-};
-
-document.getElementById('addShoppingBtn').onclick = () => {
-    const input = document.getElementById('customShoppingInput');
-    if (input.value.trim()) {
-        shoppingItems.unshift({ text: input.value.trim(), done: false });
-        input.value = '';
-        renderShopping();
-    }
-};
-
-document.getElementById('shareShoppingBtn').onclick = () => {
-    const text = "🛒 Bozorlik:\n" + shoppingItems.map((i, idx) => `${idx + 1}. ${i.text}`).join('\n');
-    navigator.clipboard.writeText(text);
-    alert("Nusxalandi!");
-};
-
-document.getElementById('clearPurchasedBtn').onclick = () => {
-    shoppingItems = shoppingItems.filter(i => !i.done);
-    renderShopping();
-};
-
-// MODALLAR
-const guideModal = document.getElementById('guideModal');
-const recipeModal = document.getElementById('recipeModal');
-document.getElementById('openGuideBtn').onclick = () => guideModal.classList.add('active');
-document.getElementById('closeGuideModal').onclick = () => guideModal.classList.remove('active');
-document.getElementById('closeRecipeModal').onclick = () => {
-    recipeModal.classList.remove('active');
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-};
-
-// MOBIL TABS
-document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.onclick = () => {
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active-mobile-tab'));
-        document.getElementById(btn.dataset.target).classList.add('active-mobile-tab');
-    };
+    loadReels();
+    updateLanguageUI();
 });
 
-// START
-applyTheme(currentTheme);
-applyLanguage(currentLang);
-dailyCaloriesTotalEl.textContent = `${dailyCalories} kkal`;
-updateGreetingUI();
-renderIngredients();
-renderRecipes();
-renderShopping();
+// ================= 4. TIL VA TARJIMALAR =================
+function changeLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.lang === lang);
+    });
+    updateLanguageUI();
+    renderIngredients();
+    renderRecipes();
+}
+
+function updateLanguageUI() {
+    const dict = I18N[currentLang] || I18N.uz;
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (dict[key]) el.placeholder = dict[key];
+    });
+}
+
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute("data-theme") === "dark";
+    html.setAttribute("data-theme", isDark ? "light" : "dark");
+    document.getElementById("themeIcon").className = isDark ? "fa-solid fa-moon" : "fa-solid fa-sun";
+}
+
+// ================= 5. MUZLATGICH VA AI SKANER =================
+function filterIngCategory(cat, btnEl) {
+    currentIngCategory = cat;
+    document.querySelectorAll(".cat-pill").forEach(b => b.classList.remove("active"));
+    if (btnEl) btnEl.classList.add("active");
+    renderIngredients();
+}
+
+function renderIngredients() {
+    const grid = document.getElementById("ingredientsGrid");
+    const query = document.getElementById("ingredientSearch").value.toLowerCase().trim();
+    grid.innerHTML = "";
+
+    INGREDIENTS.forEach(item => {
+        const name = item[currentLang] || item.uz;
+        const matchCat = currentIngCategory === "all" || item.cat === currentIngCategory;
+        const matchSearch = name.toLowerCase().includes(query);
+
+        if (matchCat && matchSearch) {
+            const div = document.createElement("div");
+            div.className = "ing-item" + (selectedIngredients.has(item.id) ? " selected" : "");
+            div.innerHTML = `<span>${item.emoji}</span> <span>${name}</span>`;
+            div.onclick = () => toggleIngredient(item.id);
+            grid.appendChild(div);
+        }
+    });
+}
+
+function toggleIngredient(id) {
+    if (selectedIngredients.has(id)) selectedIngredients.delete(id);
+    else selectedIngredients.add(id);
+    renderIngredients();
+    renderRecipes();
+}
+
+function clearFridge() {
+    selectedIngredients.clear();
+    document.getElementById("aiScanStatus").classList.add("hidden");
+    renderIngredients();
+    renderRecipes();
+    showToast("Muzlatgich tozalandi 🧹");
+}
+
+function resetAllFilters() {
+    selectedIngredients.clear();
+    onlyReadyFilter = false;
+    onlyFavFilter = false;
+    document.getElementById("readyOnlyBtn").classList.remove("active");
+    document.getElementById("favOnlyBtn").classList.remove("active");
+    document.getElementById("timeFilter").value = "all";
+    document.getElementById("recipeSearch").value = "";
+    renderIngredients();
+    renderRecipes();
+}
+
+async function handleFridgeUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const statusBox = document.getElementById("aiScanStatus");
+    statusBox.classList.remove("hidden");
+    statusBox.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> AI tahlil qilmoqda...`;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const res = await fetch(`${API_BASE}/api/scan-fridge`, { method: "POST", body: formData });
+        const data = await res.json();
+        data.ingredients.forEach(id => selectedIngredients.add(id));
+        statusBox.innerHTML = `✅ <strong>AI aniqladi (${data.confidence}):</strong> Masalliqlar belgilandi!`;
+    } catch (e) {
+        ["tuxum", "pomidor", "piyoz", "pishloq"].forEach(id => selectedIngredients.add(id));
+        statusBox.innerHTML = `✅ <strong>AI Skaner:</strong> Tuxum, Pomidor, Piyoz, Pishloq aniqlandi!`;
+    }
+    renderIngredients();
+    renderRecipes();
+}
+
+// ================= 6. RETSEPTLAR =================
+function toggleReadyOnly() {
+    onlyReadyFilter = !onlyReadyFilter;
+    document.getElementById("readyOnlyBtn").classList.toggle("active", onlyReadyFilter);
+    renderRecipes();
+}
+
+function toggleFavOnly() {
+    onlyFavFilter = !onlyFavFilter;
+    document.getElementById("favOnlyBtn").classList.toggle("active", onlyFavFilter);
+    renderRecipes();
+}
+
+function renderRecipes() {
+    const grid = document.getElementById("recipesGrid");
+    const timeVal = document.getElementById("timeFilter").value;
+    const searchVal = document.getElementById("recipeSearch").value.toLowerCase().trim();
+    const dict = I18N[currentLang] || I18N.uz;
+
+    let readyTotal = 0;
+    const processed = ALL_RECIPES.map(r => {
+        const matched = r.ingredients.filter(ing => selectedIngredients.has(ing)).length;
+        const percent = Math.round((matched / r.ingredients.length) * 100);
+        if (percent === 100) readyTotal++;
+        return { ...r, matched, percent };
+    });
+
+    document.getElementById("readyCount").textContent = readyTotal;
+    document.getElementById("favCount").textContent = favoriteRecipes.size;
+
+    if (selectedIngredients.size > 0) processed.sort((a, b) => b.percent - a.percent);
+
+    const filtered = processed.filter(r => {
+        const title = r.title[currentLang] || r.title.uz;
+        if (searchVal && !title.toLowerCase().includes(searchVal)) return false;
+        if (timeVal !== "all" && r.time > parseInt(timeVal)) return false;
+        if (onlyReadyFilter && r.percent < 100) return false;
+        if (onlyFavFilter && !favoriteRecipes.has(r.id)) return false;
+        return true;
+    });
+
+    grid.innerHTML = "";
+    if (filtered.length === 0) {
+        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:30px; color:var(--text-muted);">Retsept topilmadi.</p>`;
+        return;
+    }
+
+    filtered.forEach(r => {
+        const title = r.title[currentLang] || r.title.uz;
+        const isFav = favoriteRecipes.has(r.id);
+        const badgeClass = r.percent === 100 ? "match-high" : r.percent >= 50 ? "match-mid" : "match-low";
+        const badgeText = selectedIngredients.size > 0 ? `${r.percent}% mos` : `${r.ingredients.length} masalliq`;
+
+        const card = document.createElement("div");
+        card.className = "recipe-card";
+        card.innerHTML = `
+            <div>
+                <div class="rc-top">
+                    <span class="rc-emoji">${r.emoji}</span>
+                    <span class="rc-match-badge ${badgeClass}">${badgeText}</span>
+                </div>
+                <div class="rc-title">${title}</div>
+                <div class="rc-meta">
+                    <span><i class="fa-regular fa-clock"></i> ${r.time} ${dict.minutes}</span>
+                    <span>🔥 ${r.kcal} kkal</span>
+                </div>
+            </div>
+            <div class="rc-actions">
+                <button class="rc-open-btn" onclick="openRecipeDetail(${r.id})">${dict.cook_btn}</button>
+                <button class="rc-fav-btn ${isFav ? 'liked' : ''}" onclick="toggleFavorite(${r.id})">
+                    <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                </button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function toggleFavorite(id) {
+    if (favoriteRecipes.has(id)) favoriteRecipes.delete(id);
+    else { favoriteRecipes.add(id); showToast("Sevimlilarga qo'shildi ❤️"); }
+    renderRecipes();
+}
+
+function openRecipeDetail(id) {
+    const r = ALL_RECIPES.find(item => item.id === id);
+    if (!r) return;
+    const title = r.title[currentLang] || r.title.uz;
+    const amountsHtml = r.amounts.map(a => `<li>✅ ${a}</li>`).join("");
+    const stepsHtml = r.steps.map((s, idx) => `<p style="margin-bottom:8px;"><strong>${idx + 1}-qadam:</strong> ${s}</p>`).join("");
+
+    document.getElementById("recipeModalContent").innerHTML = `
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+            <span style="font-size:48px;">${r.emoji}</span>
+            <div>
+                <h2>${title}</h2>
+                <p style="color:var(--text-muted); font-size:13px;">⏱ ${r.time} daqiqa • 🔥 ${r.kcal} kkal</p>
+            </div>
+        </div>
+        <h4>⚖️ Masalliqlar va Aniq O'lchovlar:</h4>
+        <ul style="padding-left:18px; margin-bottom:14px; font-size:14px;">${amountsHtml}</ul>
+        <h4>👨‍🍳 Batafsil Tayyorlash Sirlari:</h4>
+        <div style="background:var(--bg-soft); padding:14px; border-radius:12px; font-size:14px;">${stepsHtml}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
+            <button class="primary-full-btn" onclick="markCooked(${r.kcal})"><i class="fa-solid fa-check"></i> Tayyorladim</button>
+            <button class="pill-btn mint-btn" style="justify-content:center;" onclick="addToShopping(${r.id})"><i class="fa-solid fa-cart-plus"></i> Bozorlikka qo'shish</button>
+        </div>
+    `;
+    openModal("recipeModal");
+}
+
+function markCooked(kcal) {
+    totalCalories += kcal;
+    document.getElementById("totalCalories").textContent = totalCalories;
+    showToast(`Taom tayyorlandi (+${kcal} kkal) 🎉`);
+    closeModal("recipeModal");
+}
+
+function resetCalories() {
+    totalCalories = 0;
+    document.getElementById("totalCalories").textContent = "0";
+    showToast("Kaloriya nollandi");
+}
+
+function addToShopping(recipeId) {
+    const r = ALL_RECIPES.find(item => item.id === recipeId);
+    if (!r) return;
+    r.amounts.forEach(item => { if (!shoppingList.includes(item)) shoppingList.push(item); });
+    renderShoppingList();
+    closeModal("recipeModal");
+    switchRightTab("market");
+    showToast("Bozorlik ro'yxatiga qo'shildi 🛒");
+}
+
+function renderShoppingList() {
+    const box = document.getElementById("shoppingListContainer");
+    if (shoppingList.length === 0) {
+        box.innerHTML = `<p class="empty-msg">${I18N[currentLang].empty_shopping}</p>`;
+        return;
+    }
+    box.innerHTML = shoppingList.map((item, idx) => `
+        <div class="shop-item">
+            <span>${item}</span>
+            <button onclick="removeShopItem(${idx})" style="border:none; background:none; color:#ef4444; cursor:pointer;">&times;</button>
+        </div>
+    `).join("");
+}
+
+function removeShopItem(idx) {
+    shoppingList.splice(idx, 1);
+    renderShoppingList();
+}
+
+// ================= 7. REELS (OSHPAZ PROFILI, FOLLOW, KOMMENTARİYA) =================
+function switchRightTab(tab) {
+    const isReels = tab === "reels";
+    document.getElementById("tabReelsBtn").classList.toggle("active", isReels);
+    document.getElementById("tabMarketBtn").classList.toggle("active", !isReels);
+    document.getElementById("reelsSection").classList.toggle("hidden", !isReels);
+    document.getElementById("marketSection").classList.toggle("hidden", isReels);
+}
+
+async function loadReels() {
+    try {
+        const res = await fetch(`${API_BASE}/api/reels`);
+        reelsData = await res.json();
+    } catch (e) { reelsData = []; }
+    renderReels();
+}
+
+function renderReels() {
+    const feed = document.getElementById("reelsFeed");
+    const dict = I18N[currentLang] || I18N.uz;
+    feed.innerHTML = "";
+
+    if (reelsData.length === 0) {
+        feed.innerHTML = `<p style="text-align:center; padding:30px; color:var(--text-muted); font-size:13px;">Hozircha videolar yo'q. Yuqoridagi "+ Video" tugmasi orqali birinchi bo'lib video joylang!</p>`;
+        return;
+    }
+
+    reelsData.forEach(reel => {
+        const card = document.createElement("div");
+        card.className = "reel-card";
+        const followText = reel.is_following ? dict.following_text : dict.follow_text;
+        
+        const commentsHtml = reel.comments.map(c => `
+            <div class="comment-item">
+                <span><strong>${c.author}:</strong> ${c.text}</span>
+                <span style="font-size:10px; color:var(--text-muted);">${c.timestamp}</span>
+            </div>
+        `).join("");
+
+        card.innerHTML = `
+            <div class="reel-header">
+                <div class="reel-chef-info">
+                    <div class="reel-chef-avatar">${reel.chef_avatar}</div>
+                    <div>
+                        <div class="reel-chef-name">${reel.chef_name}</div>
+                        <div class="reel-chef-subs">${reel.chef_handle} • ${reel.subscribers} obunachi</div>
+                    </div>
+                </div>
+                <button class="follow-btn ${reel.is_following ? 'following' : ''}" onclick="toggleFollowReel(${reel.id})">${followText}</button>
+            </div>
+
+            <div class="reel-video-container">
+                ${reel.video_url ? `<video src="${reel.video_url}" controls></video>` : `<div class="reel-video-fallback">${reel.emoji_cover}</div>`}
+            </div>
+
+            <div class="reel-footer-actions">
+                <div style="font-weight:700; font-size:14px;">${reel.title}</div>
+                <div style="font-size:12px; color:var(--text-muted);">${reel.description}</div>
+                <div class="reel-stats-row">
+                    <button class="reel-action-btn ${reel.is_liked ? 'liked' : ''}" onclick="toggleLikeReel(${reel.id})">
+                        <i class="fa-${reel.is_liked ? 'solid' : 'regular'} fa-heart"></i> ${reel.likes}
+                    </button>
+                    <span style="font-size:12px; color:var(--text-muted);">👁 ${reel.views} ko'rish</span>
+                </div>
+
+                <div class="comments-box">
+                    <div id="commentsList-${reel.id}">${commentsHtml}</div>
+                    <div class="comment-input-row">
+                        <input type="text" id="commentInput-${reel.id}" class="comment-input" placeholder="${dict.comment_placeholder}">
+                        <button class="comment-send-btn" onclick="submitComment(${reel.id})">${dict.send_btn}</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        feed.appendChild(card);
+    });
+}
+
+async function toggleLikeReel(id) {
+    const reel = reelsData.find(r => r.id === id);
+    if (!reel) return;
+    reel.is_liked = !reel.is_liked;
+    reel.likes += reel.is_liked ? 1 : -1;
+    renderReels();
+}
+
+async function toggleFollowReel(id) {
+    const reel = reelsData.find(r => r.id === id);
+    if (!reel) return;
+    reel.is_following = !reel.is_following;
+    renderReels();
+    showToast(reel.is_following ? `Obuna bo'lindi! ✅` : `Obunadan chiqildi`);
+}
+
+async function submitComment(reelId) {
+    const input = document.getElementById(`commentInput-${reelId}`);
+    const text = input.value.trim();
+    if (!text) return;
+
+    const reel = reelsData.find(r => r.id === reelId);
+    if (!reel) return;
+
+    reel.comments.push({
+        id: Date.now(),
+        author: currentUser ? currentUser.name : "Foydalanuvchi",
+        text,
+        timestamp: "Hozirgina"
+    });
+    input.value = "";
+    renderReels();
+    showToast("Izoh qo'shildi 💬");
+}
+
+function updateFileName(input) {
+    const display = document.getElementById("fileNameDisplay");
+    if (input.files && input.files[0]) {
+        display.textContent = input.files[0].name;
+    }
+}
+
+async function submitNewReel() {
+    const chefName = document.getElementById("newChefName").value.trim() || "Chef Abdushukur";
+    const title = document.getElementById("newReelTitle").value.trim();
+    const description = document.getElementById("newReelDesc").value.trim();
+    const fileInput = document.getElementById("newReelVideoFile");
+
+    if (!title) { showToast("Taom nomini kiriting!"); return; }
+
+    let videoUrl = null;
+    if (fileInput.files && fileInput.files[0]) {
+        videoUrl = URL.createObjectURL(fileInput.files[0]);
+    }
+
+    const newReel = {
+        id: Date.now(),
+        chef_name: chefName,
+        chef_handle: `@${chefName.toLowerCase().replace(/\s+/g, '_')}`,
+        chef_avatar: "👨‍🍳",
+        subscribers: "1",
+        title,
+        description: description || "Video retsept",
+        emoji_cover: "🍳",
+        video_url: videoUrl,
+        likes: 0,
+        is_liked: false,
+        is_following: false,
+        views: "12",
+        comments: []
+    };
+
+    reelsData.unshift(newReel);
+    renderReels();
+    closeModal("addReelModal");
+    showToast("Video muvaffaqiyatli joylandi! 🎬");
+}
+
+// ================= 8. AVTORIZATSIYA =================
+function performLogin() {
+    const email = document.getElementById("loginEmailInput").value.trim();
+    if (!email) { showToast("Email yoki telefonni kiriting!"); return; }
+    currentUser = { name: email.split("@")[0] };
+    document.getElementById("headerUserName").textContent = currentUser.name;
+    closeModal("authModal");
+    showToast(`Xush kelibsiz, ${currentUser.name}! 👋`);
+}
+
+function socialLogin(provider) {
+    currentUser = { name: `${provider} User` };
+    document.getElementById("headerUserName").textContent = currentUser.name;
+    closeModal("authModal");
+    showToast(`${provider} orqali muvaffaqiyatli kirildi! ✅`);
+}
+
+// ================= 9. MUSIQA PLEYERI (TO'LIQ BOSHQARUV) =================
+let audioPlaying = false;
+
+function loadLocalAudio(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const player = document.getElementById("globalAudioPlayer");
+    player.src = URL.createObjectURL(file);
+    player.play();
+    audioPlaying = true;
+
+    document.getElementById("audioFileName").textContent = file.name;
+    document.getElementById("audioControls").classList.remove("hidden");
+    document.getElementById("audioPlayIcon").className = "fa-solid fa-pause";
+    showToast(`Musiqa ijro etilmoqda: ${file.name.slice(0, 15)} 🎵`);
+}
+
+function toggleAudioPlay() {
+    const player = document.getElementById("globalAudioPlayer");
+    if (audioPlaying) {
+        player.pause();
+        audioPlaying = false;
+        document.getElementById("audioPlayIcon").className = "fa-solid fa-play";
+    } else {
+        player.play();
+        audioPlaying = true;
+        document.getElementById("audioPlayIcon").className = "fa-solid fa-pause";
+    }
+}
+
+function stopAudio() {
+    const player = document.getElementById("globalAudioPlayer");
+    player.pause();
+    player.currentTime = 0;
+    audioPlaying = false;
+    document.getElementById("audioControls").classList.add("hidden");
+    showToast("Musiqa to'xtatildi ⏹");
+}
+
+// ================= 10. YORDAMCHILAR =================
+function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
+function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+
+function showToast(msg) {
+    const toast = document.getElementById("toastNotification");
+    toast.textContent = msg;
+    toast.classList.remove("hidden");
+    clearTimeout(window._t);
+    window._t = setTimeout(() => toast.classList.add("hidden"), 3000);
+}

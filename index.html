@@ -2,215 +2,261 @@
 <html lang="uz" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Oshxona.AI — Aqlli Ro'zg'or va Retseptlar Platformasi</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oshxona.AI — Global Oshpazlar Platformasi</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <!-- YUQORI PANEL (HEADER) -->
-    <header class="top-header">
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-icon">🍳</div>
+    <!-- YUQORI NAVIGATSIYA PANELI -->
+    <header class="navbar">
+        <div class="nav-left" onclick="resetAllFilters()" style="cursor: pointer;">
+            <div class="logo-box">
+                <div class="logo-icon"><i class="fa-solid fa-utensils"></i></div>
                 <div>
-                    <h1 class="logo-text">Oshxona<span>.AI</span></h1>
-                    <p class="logo-sub" id="subLogoText">Aqlli ro'zg'or va AI retseptlar</p>
+                    <h1 class="logo-title">Oshxona<span>.AI</span></h1>
+                    <p class="logo-sub" data-i18n="platform_sub">Global Oshpazlar Platformasi</p>
                 </div>
             </div>
+        </div>
 
-            <div class="header-actions">
-                <!-- TIL ALMASHTIRGICH (UZ | RU | EN) -->
-                <div class="lang-switcher">
-                    <button class="lang-btn active" data-lang="uz">UZ</button>
-                    <button class="lang-btn" data-lang="ru">RU</button>
-                    <button class="lang-btn" data-lang="en">EN</button>
+        <div class="nav-center">
+            <!-- MUSIQA YUKLASH VA PLEYER PANELI -->
+            <div class="music-player-box" id="musicPlayerBox">
+                <label class="pill-btn mint-btn music-upload-label">
+                    <i class="fa-solid fa-music"></i> <span data-i18n="upload_music">Musiqa yuklash</span>
+                    <input type="file" accept="audio/*" onchange="loadLocalAudio(event)" hidden>
+                </label>
+                <div id="audioControls" class="audio-controls hidden">
+                    <span id="audioFileName" class="audio-name">qo'shiq.mp3</span>
+                    <button class="audio-ctrl-btn" onclick="toggleAudioPlay()"><i id="audioPlayIcon" class="fa-solid fa-pause"></i></button>
+                    <button class="audio-ctrl-btn" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
                 </div>
-
-                <!-- TUN / KUN REJIMI TUGMASI -->
-                <button class="icon-action-btn" id="themeToggleBtn" title="Tun / Kun rejimi">
-                    <span id="themeIcon">🌙</span>
-                </button>
-
-                <!-- FOYDALANUVCHI PROFili -->
-                <button class="user-greeting-btn" id="userProfileBtn" title="Ismni o'zgartirish">
-                    <span id="headerGreetingText">Salom, Mehmon!</span>
-                    <span class="edit-pencil">✎</span>
-                </button>
-
-                <!-- QO'LLANMA -->
-                <button class="btn-guide" id="openGuideBtn">
-                    <span>📖</span> <span data-i18n="guide">Qo'llanma</span>
-                </button>
+                <audio id="globalAudioPlayer" class="hidden"></audio>
             </div>
+        </div>
+
+        <div class="nav-right">
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="uz" onclick="changeLanguage('uz')">UZ</button>
+                <button class="lang-btn" data-lang="ru" onclick="changeLanguage('ru')">RU</button>
+                <button class="lang-btn" data-lang="en" onclick="changeLanguage('en')">EN</button>
+            </div>
+
+            <button class="icon-circle-btn" onclick="toggleTheme()" title="Rejim">
+                <i id="themeIcon" class="fa-solid fa-moon"></i>
+            </button>
+
+            <!-- PROFIL / KIRISH -->
+            <button class="pill-btn user-btn" onclick="openModal('authModal')">
+                <i class="fa-solid fa-user-circle"></i> <span id="headerUserName" data-i18n="guest">Mehmon</span>
+            </button>
+
+            <!-- QO'LLANMA -->
+            <button class="pill-btn dark-btn" onclick="openModal('guideModal')">
+                <i class="fa-solid fa-book-open"></i> <span data-i18n="guide">Qo'llanma</span>
+            </button>
         </div>
     </header>
 
-    <!-- ASOSIY TO'LIQ EKRANLI ISH MAYDONI -->
-    <main class="main-workspace">
-        
-        <!-- 1-BO'LIM: MUZLATGICH VA OSHXONA LENS -->
-        <section class="panel fridge-panel active-mobile-tab" id="tab-fridge">
-            <div class="panel-header">
-                <h2 data-i18n="fridgeTitle">🧊 Muzlatgichim</h2>
-                <button class="btn-text-danger" id="clearIngredientsBtn" data-i18n="clear">Tozalash</button>
-            </div>
-            <p class="panel-desc" data-i18n="fridgeDesc">Uyingizda bor mahsulotlarni belgilang yoki AI skanerdan foydalaning:</p>
+    <!-- ASOSIY 3 USTUNLI DASHBOARD -->
+    <main class="main-grid">
 
-            <!-- OSHXONA LENS (AI RASM ORQALI ANIQLASH) -->
-            <div class="ai-lens-box">
-                <input type="file" id="lensFileInput" accept="image/*" hidden>
-                <button class="btn-ai-lens" id="triggerLensBtn">
-                    <span>📸</span> <span data-i18n="lensBtn">Oshxona Lens: Muzlatgichni rasmga olish</span>
-                </button>
-                <div id="lensStatus" class="lens-status"></div>
+        <!-- 1-USTUN: MUZLATGICH VA AI SKANER -->
+        <section class="panel fridge-panel">
+            <div class="panel-header">
+                <h2><i class="fa-solid fa-cube"></i> <span data-i18n="my_fridge">Muzlatgichim</span></h2>
+                <button class="clear-btn" onclick="clearFridge()" data-i18n="clear">Tozalash</button>
             </div>
+
+            <p class="panel-desc" data-i18n="fridge_desc">Mahsulotlarni belgilang yoki AI skanerdan foydalaning:</p>
+
+            <div class="scanner-actions">
+                <label class="scan-btn camera-btn">
+                    <i class="fa-solid fa-camera"></i> <span data-i18n="from_camera">Kameradan</span>
+                    <input type="file" accept="image/*" capture="environment" onchange="handleFridgeUpload(event)" hidden>
+                </label>
+                <label class="scan-btn gallery-btn">
+                    <i class="fa-solid fa-image"></i> <span data-i18n="from_gallery">Galereyadan</span>
+                    <input type="file" accept="image/*" onchange="handleFridgeUpload(event)" hidden>
+                </label>
+            </div>
+
+            <div id="aiScanStatus" class="ai-status-box hidden"></div>
 
             <div class="search-box">
-                <input type="text" id="ingredientSearch" placeholder="Mahsulot qidirish...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="ingredientSearch" oninput="renderIngredients()" data-i18n-placeholder="search_ingredient" placeholder="Mahsulot qidirish...">
             </div>
 
-            <div class="category-chips" id="categoryChips">
-                <button class="chip active" data-cat="all" data-i18n="catAll">Barchasi</button>
-                <button class="chip" data-cat="sabzavot" data-i18n="catVeg">Sabzavotlar</button>
-                <button class="chip" data-cat="gosht" data-i18n="catMeat">Go'sht va Tuxum</button>
-                <button class="chip" data-cat="sut" data-i18n="catMilk">Sut mahsulotlari</button>
-                <button class="chip" data-cat="don" data-i18n="catGrain">Don va Un</button>
+            <div class="category-pills" id="categoryPills">
+                <button class="cat-pill active" data-cat="all" onclick="filterIngCategory('all', this)" data-i18n="cat_all">Barchasi</button>
+                <button class="cat-pill" data-cat="vegetable" onclick="filterIngCategory('vegetable', this)" data-i18n="cat_veg">Sabzavot</button>
+                <button class="cat-pill" data-cat="meat" onclick="filterIngCategory('meat', this)" data-i18n="cat_meat">Go'sht</button>
+                <button class="cat-pill" data-cat="dairy" onclick="filterIngCategory('dairy', this)" data-i18n="cat_dairy">Sut mahsulot</button>
+                <button class="cat-pill" data-cat="grain" onclick="filterIngCategory('grain', this)" data-i18n="cat_grain">Don & Un</button>
+                <button class="cat-pill" data-cat="fruit" onclick="filterIngCategory('fruit', this)" data-i18n="cat_fruit">Meva</button>
             </div>
 
-            <div class="ingredients-grid" id="ingredientsGrid"></div>
+            <div id="ingredientsGrid" class="ingredients-grid"></div>
         </section>
 
-        <!-- 2-BO'LIM: AI RETSEPTLAR -->
-        <section class="panel recipes-panel" id="tab-recipes">
-            <div class="panel-header recipes-top-bar">
-                <div>
-                    <h2 data-i18n="recipesTitle">🍲 Tayyorlash mumkin bo'lgan taomlar</h2>
-                    <p class="panel-desc" id="recipeStatusText">Mahsulotlarni tanlang</p>
-                </div>
-                
-                <div class="filters-row">
-                    <button class="filter-toggle-btn" id="onlyReadyToggle" data-i18n="onlyReady">✅ Faqat tayyorlari</button>
-                    <button class="filter-toggle-btn" id="onlyFavoritesToggle">❤️ Sevimlilar (<span id="favCount">0</span>)</button>
-                    <select id="mealFilter" class="custom-select">
-                        <option value="all" data-i18n="mealAll">Barcha vaqtlar</option>
-                        <option value="Nonushta" data-i18n="mealBreak">Nonushta</option>
-                        <option value="Tushlik" data-i18n="mealLunch">Tushlik</option>
-                        <option value="Kechki ovqat" data-i18n="mealDinner">Kechki ovqat</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- KUNLIK KALORIYA NAZORATI -->
-            <div class="calorie-tracker-bar">
-                <div class="cal-info">
-                    <span data-i18n="calText">🔥 Bugungi kaloriya:</span>
-                    <strong id="dailyCaloriesTotal">0 kkal</strong>
-                </div>
-                <button class="btn-reset-cal" id="resetCalBtn" data-i18n="reset">Nollash</button>
-            </div>
-
-            <div class="recipes-grid" id="recipesGrid"></div>
-        </section>
-
-        <!-- 3-BO'LIM: OILAVIY BOZORLIK RO'YXATI -->
-        <section class="panel shopping-panel" id="tab-shopping">
+        <!-- 2-USTUN: 100 TA TAKRORLANMAS, ANIQ RETSEPTLAR -->
+        <section class="panel recipes-panel">
             <div class="panel-header">
-                <h2 data-i18n="shoppingTitle">🛒 Bozorlik ro'yxati</h2>
-                <span class="badge-orange" id="shoppingCount">0 ta</span>
+                <h2><i class="fa-solid fa-utensils"></i> <span data-i18n="recipes_title">100+ Aniq Retseptlar</span></h2>
+                <div class="recipe-top-filters">
+                    <button id="readyOnlyBtn" class="filter-chip" onclick="toggleReadyOnly()">
+                        <i class="fa-solid fa-circle-check"></i> <span data-i18n="ready_only">Tayyorlari</span> (<span id="readyCount">0</span>)
+                    </button>
+                    <button id="favOnlyBtn" class="filter-chip" onclick="toggleFavOnly()">
+                        <i class="fa-solid fa-heart"></i> <span data-i18n="favorites">Sevimlilar</span> (<span id="favCount">0</span>)
+                    </button>
+                </div>
             </div>
-            <p class="panel-desc" data-i18n="shoppingDesc">Yetishmayotgan mahsulotlar:</p>
 
-            <div class="add-shopping-form">
-                <input type="text" id="customShoppingInput" placeholder="Yangi mahsulot...">
-                <button id="addShoppingBtn">+</button>
+            <div class="recipe-subbar">
+                <div class="subbar-left">
+                    <select id="timeFilter" class="select-box" onchange="renderRecipes()">
+                        <option value="all" data-i18n="all_times">Barcha vaqtlar</option>
+                        <option value="15" data-i18n="under_15">15 daqiqagacha</option>
+                        <option value="30" data-i18n="under_30">30 daqiqagacha</option>
+                        <option value="60" data-i18n="under_60">60 daqiqagacha</option>
+                    </select>
+                    <input type="text" id="recipeSearch" class="recipe-search-input" oninput="renderRecipes()" data-i18n-placeholder="search_recipe" placeholder="Taom nomini qidiring...">
+                </div>
+
+                <div class="calorie-tracker">
+                    <span>🔥 <span data-i18n="calories">Kaloriya</span>: <strong id="totalCalories">0</strong> kkal</span>
+                    <button class="reset-cal-btn" onclick="resetCalories()" data-i18n="reset">Nollash</button>
+                </div>
             </div>
 
-            <ul class="shopping-list" id="shoppingList"></ul>
+            <div id="selectedStatusText" class="selected-hint" data-i18n="select_ingredients_hint">
+                Barcha 100 ta retsept ko'rsatilmoqda. Mos taomlarni saralash uchun mahsulotlarni tanlang:
+            </div>
 
-            <div class="shopping-footer">
-                <button class="btn-secondary-full" id="shareShoppingBtn" style="margin-bottom: 8px;" data-i18n="copyList">📤 Ro'yxatni nusxalash</button>
-                <button class="btn-secondary-full" id="clearPurchasedBtn" data-i18n="clearDone">Sotib olinganlarni o'chirish</button>
+            <div id="recipesGrid" class="recipes-grid"></div>
+        </section>
+
+        <!-- 3-USTUN: REELS VA BOZORLIK -->
+        <section class="panel social-panel">
+            <div class="tabs-header">
+                <button class="tab-btn active" id="tabReelsBtn" onclick="switchRightTab('reels')">
+                    <i class="fa-solid fa-video"></i> Reels
+                </button>
+                <button class="tab-btn" id="tabMarketBtn" onclick="switchRightTab('market')">
+                    <i class="fa-solid fa-cart-shopping"></i> <span data-i18n="market">Bozorlik</span>
+                </button>
+            </div>
+
+            <!-- REELS BO'LIMI -->
+            <div id="reelsSection" class="right-tab-content">
+                <div class="reels-topbar">
+                    <h3>Oshxona Reels</h3>
+                    <button class="add-video-btn" onclick="openModal('addReelModal')">
+                        <i class="fa-solid fa-plus"></i> <span data-i18n="add_video">Video joylash</span>
+                    </button>
+                </div>
+                <div id="reelsFeed" class="reels-feed"></div>
+            </div>
+
+            <!-- BOZORLIK RO'YXATI -->
+            <div id="marketSection" class="right-tab-content hidden">
+                <div class="market-card">
+                    <h3>🛒 <span data-i18n="shopping_list">Kerakli masalliqlar</span></h3>
+                    <p class="muted-text" data-i18n="shopping_desc">Retsept ichidan "Bozorlikka qo'shish" tugmasini bosing:</p>
+                    <div id="shoppingListContainer" class="shopping-list">
+                        <p class="empty-msg" data-i18n="empty_shopping">Hozircha ro'yxat bo'sh.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- MOBIL PASTKI MENYU -->
-    <nav class="mobile-bottom-nav">
-        <button class="nav-item active" data-target="tab-fridge">
-            <span class="nav-icon">🧊</span>
-            <span class="nav-label" data-i18n="navFridge">Muzlatgich</span>
-        </button>
-        <button class="nav-item" data-target="tab-recipes">
-            <span class="nav-icon">🍲</span>
-            <span class="nav-label" data-i18n="navRecipes">Retseptlar</span>
-        </button>
-        <button class="nav-item" data-target="tab-shopping">
-            <span class="nav-icon">🛒</span>
-            <span class="nav-label" data-i18n="navShop">Bozorlik</span>
-        </button>
-    </nav>
-
-    <!-- FOOTER -->
+    <!-- FOOTER (SIZNING TALABINGiz BO'YICHA O'ZGARMAS) -->
     <main-footer class="main-footer">
-        <p>© 2026 <strong>Oshxona.AI</strong>. Designed & Developed by <strong>Najimov Abdushukur</strong> (Founder & Lead Developer)</p>
+        Designed & Developed by <strong>Najimov Abdushukur</strong> (Founder & Lead Developer)
     </main-footer>
 
-    <!-- ISM KIRITISH MODALI -->
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-card auth-card">
-            <button class="modal-close" id="closeAuthModal">&times;</button>
-            <div class="guide-header" style="text-align: center; margin-bottom: 20px;">
-                <span class="guide-badge" data-i18n="cabinet">Shaxsiy Kabinet</span>
-                <h2 data-i18n="welcomeTitle">Xush kelibsiz!</h2>
-                <p class="panel-desc" data-i18n="welcomeDesc">Ismingizni kiriting:</p>
-            </div>
-            <div class="auth-form">
-                <input type="text" id="authNameInput" placeholder="Ismingiz..." class="auth-input">
-                <button class="btn-view-recipe" id="saveAuthBtn" style="width:100%; padding: 14px;" data-i18n="save">Saqlash</button>
-            </div>
-        </div>
-    </div>
+    <!-- ================= MODALLAR ================= -->
 
-    <!-- RETSEPT VA VIDEO MODALI -->
-    <div class="modal-overlay" id="recipeModal">
-        <div class="modal-card modal-large">
-            <button class="modal-close" id="closeRecipeModal">&times;</button>
+    <!-- 1. RETSEPT BATAFSIL -->
+    <div id="recipeModal" class="modal-overlay hidden">
+        <div class="modal-box large-modal">
+            <button class="modal-close" onclick="closeModal('recipeModal')">&times;</button>
             <div id="recipeModalContent"></div>
         </div>
     </div>
 
-    <!-- QO'LLANMA MODALI -->
-    <div class="modal-overlay" id="guideModal">
-        <div class="modal-card">
-            <button class="modal-close" id="closeGuideModal">&times;</button>
-            <div class="guide-header">
-                <span class="guide-badge" data-i18n="guideBadge">Qo'llanma</span>
-                <h2 data-i18n="guideTitleText">Oshxona.AI haqida</h2>
-            </div>
-            
-            <div class="guide-body">
-                <div class="guide-purpose">
-                    <h4 data-i18n="gPurposeTitle">🎯 Maqsad:</h4>
-                    <p data-i18n="gPurposeDesc">Uydagi mahsulotlardan oson va tez ovqat pishirish.</p>
+    <!-- 2. AVTORIZATSIYA -->
+    <div id="authModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+            <div class="auth-container">
+                <h2>Oshxona.AI</h2>
+                <p class="muted-text" data-i18n="auth_desc">Tizimga kirish yoki ro'yxatdan o'tish</p>
+                
+                <div class="profile-form" style="margin-top: 14px;">
+                    <input type="text" id="loginEmailInput" data-i18n-placeholder="email_placeholder" placeholder="Email yoki telefon raqam">
+                    <input type="password" id="loginPassInput" data-i18n-placeholder="pass_placeholder" placeholder="Parol">
+                    <button class="primary-full-btn" onclick="performLogin()" data-i18n="login_btn">Kirish</button>
                 </div>
 
-                <div class="creator-box">
-                    <div class="creator-avatar">👨‍💻</div>
-                    <div>
-                        <span class="creator-role">Founder & Lead Developer</span>
-                        <h3>Najimov Abdushukur</h3>
-                        <p data-i18n="creatorDesc">Zamonaviy aqlli oshxona yordamchisi.</p>
-                    </div>
-                </div>
+                <div class="auth-divider"><span data-i18n="or_text">yoki</span></div>
+
+                <button class="social-login-btn google-btn" onclick="socialLogin('Google')">
+                    <i class="fa-brands fa-google"></i> <span data-i18n="google_login">Google orqali kirish</span>
+                </button>
+                <button class="social-login-btn fb-btn" onclick="socialLogin('Facebook')">
+                    <i class="fa-brands fa-facebook"></i> <span data-i18n="fb_login">Facebook orqali kirish</span>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- 3. REELS VIDEO QO'SHISH (CHIROYLI DESIGN) -->
+    <div id="addReelModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('addReelModal')">&times;</button>
+            <h2 data-i18n="upload_reel_title">Yangi Video Reels Yuklash</h2>
+            <div class="profile-form" style="margin-top: 12px;">
+                <label data-i18n="chef_name_label">Oshpaz Ismi / Kanal Nomi:</label>
+                <input type="text" id="newChefName" data-i18n-placeholder="chef_name_placeholder" placeholder="Masalan: Chef Rustam">
+                <label data-i18n="dish_name">Taom nomi:</label>
+                <input type="text" id="newReelTitle" data-i18n-placeholder="dish_placeholder" placeholder="Masalan: Mazaali Pizza">
+                <label data-i18n="description">Tavsif:</label>
+                <input type="text" id="newReelDesc" data-i18n-placeholder="desc_placeholder" placeholder="Tayyorlash siri...">
+                
+                <!-- CHIROYLI FILE UPLOAD TUGMASI -->
+                <label data-i18n="select_video_file">Video faylni tanlang (MP4):</label>
+                <label class="custom-file-upload-btn">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> <span id="fileNameDisplay" data-i18n="choose_video_text">Video faylni tanlash (.mp4)</span>
+                    <input type="file" id="newReelVideoFile" accept="video/*" onchange="updateFileName(this)" hidden>
+                </label>
+
+                <button class="primary-full-btn" onclick="submitNewReel()" data-i18n="publish_btn">Joylash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. QO'LLANMA -->
+    <div id="guideModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('guideModal')">&times;</button>
+            <h2 data-i18n="guide_title">Oshxona.AI Qo'llanmasi</h2>
+            <ul class="guide-list">
+                <li><strong data-i18n="g1_title">1. Muzlatgich va AI Skaner:</strong> <span data-i18n="g1_desc">Uyingizdagi bor mahsulotlarni belgilang yoki muzlatgich rasmini yuklang — AI ularni avtomatik aniqlaydi.</span></li>
+                <li><strong data-i18n="g2_title">2. 100+ Aniq Retseptlar:</strong> <span data-i18n="g2_desc">Har bir taomning gramm va millilitrlarigacha aniq o'lchovlari, tayyorlash bosqichlari va kaloriyasi mavjud.</span></li>
+                <li><strong data-i18n="g3_title">3. Oshxona Reels:</strong> <span data-i18n="g3_desc">Video retseptlarni tomosha qiling, layk bosing va o'z videolaringizni yuklang.</span></li>
+                <li><strong data-i18n="g4_title">4. Bozorlik va Kaloriya:</strong> <span data-i18n="g4_desc">Tayyorlagan taomingiz kaloriyasini hisoblang va yetishmagan masalliqlarni ro'yxatga qo'shing.</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="toastNotification" class="toast hidden"></div>
     <script src="script.js"></script>
 </body>
 </html>
