@@ -1,12 +1,13 @@
-import os
-import random
-from typing import List, Optional
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+import shutil
+import os
+import uuid
+from datetime import datetime
 
-app = FastAPI(title="Oshxona.AI Pro API", version="5.0.0")
+app = FastAPI(title="Oshxona.AI Global API", version="6.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,134 +17,95 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
-if os.path.exists(frontend_path):
-    app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+UPLOAD_DIR = "uploads"
+os.makedirs(os.path.join(UPLOAD_DIR, "videos"), exist_ok=True)
+os.makedirs(os.path.join(UPLOAD_DIR, "avatars"), exist_ok=True)
+os.makedirs(os.path.join(UPLOAD_DIR, "banners"), exist_ok=True)
 
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
-class CommentModel(BaseModel):
-    id: int
-    author: str
-    avatar: str
-    text: str
-    timestamp: str
+users_db = {}
+videos_db = []
 
+class UserRegister(BaseModel):
+    name: str
+    email: str
+    password: str
 
-class ReelModel(BaseModel):
-    id: int
-    chef_name: str
-    chef_handle: str
-    chef_avatar: str
-    subscribers: str
-    title: str
-    description: str
-    video_url: Optional[str] = None
-    emoji_cover: str
-    likes: int
-    is_liked: bool = False
-    is_following: bool = False
-    views: str
-    comments: List[CommentModel] = []
-
-
-class NewReelRequest(BaseModel):
-    chef_name: str
-    chef_handle: str
-    subscribers: str
-    title: str
-    description: str
-    emoji_cover: str = "🍳"
-
-
-class NewCommentRequest(BaseModel):
-    author: str
-    text: str
-
-
-# Bo'sh reels bazasi (toza va real)
-reels_db: List[ReelModel] = []
-
-AI_FRIDGE_DETECTION_POOL = [
-    ["tuxum", "pomidor", "piyoz", "pishloq", "non"],
-    ["tovuq_goshti", "guruch", "sabzi", "sarimsoq", "yog"],
-    ["mol_goshti", "kartoshka", "piyoz", "bulgor_qalampiri", "ko'katlar"],
-    ["un", "sut", "tuxum", "shakar", "sariyog"]
-]
-
+class UserLogin(BaseModel):
+    email: str
+    password: str
 
 @app.get("/")
-async def root():
-    return {"status": "success", "message": "Oshxona.AI API ishlayapti", "founder": "Najimov Abdushukur"}
-
-
-@app.get("/api/reels", response_model=List[ReelModel])
-async def get_reels():
-    return reels_db
-
-
-@app.post("/api/reels", response_model=ReelModel)
-async def create_reel(reel: NewReelRequest):
-    new_item = ReelModel(
-        id=len(reels_db) + 1,
-        chef_name=reel.chef_name or "Oshpaz",
-        chef_handle=reel.chef_handle or "@oshpaz",
-        chef_avatar="👨‍🍳",
-        subscribers=reel.subscribers or "1.2K",
-        title=reel.title,
-        description=reel.description,
-        emoji_cover=reel.emoji_cover,
-        likes=0,
-        is_liked=False,
-        is_following=False,
-        views="1",
-        comments=[]
-    )
-    reels_db.insert(0, new_item)
-    return new_item
-
-
-@app.post("/api/reels/{reel_id}/like")
-async def toggle_like_reel(reel_id: int):
-    for reel in reels_db:
-        if reel.id == reel_id:
-            reel.is_liked = not reel.is_liked
-            reel.likes += 1 if reel.is_liked else -1
-            return {"id": reel.id, "likes": reel.likes, "is_liked": reel.is_liked}
-    raise HTTPException(status_code=404, detail="Reel topilmadi")
-
-
-@app.post("/api/reels/{reel_id}/follow")
-async def toggle_follow_reel(reel_id: int):
-    for reel in reels_db:
-        if reel.id == reel_id:
-            reel.is_following = not reel.is_following
-            return {"id": reel.id, "is_following": reel.is_following}
-    raise HTTPException(status_code=404, detail="Reel topilmadi")
-
-
-@app.post("/api/reels/{reel_id}/comment", response_model=CommentModel)
-async def add_comment_reel(reel_id: int, comment: NewCommentRequest):
-    for reel in reels_db:
-        if reel.id == reel_id:
-            new_comment = CommentModel(
-                id=random.randint(1000, 99999),
-                author=comment.author or "Foydalanuvchi",
-                avatar="🧑‍💻",
-                text=comment.text,
-                timestamp="Hozirgina"
-            )
-            reel.comments.append(new_comment)
-            return new_comment
-    raise HTTPException(status_code=404, detail="Reel topilmadi")
-
-
-@app.post("/api/scan-fridge")
-async def scan_fridge(file: UploadFile = File(...)):
-    if not file.filename:
-        raise HTTPException(status_code=400, detail="Rasm yuklanmadi")
-    detected = random.choice(AI_FRIDGE_DETECTION_POOL)
+def root():
     return {
-        "status": "success",
-        "ingredients": detected,
-        "confidence": f"{random.randint(95, 99)}%"
+        "status": "online",
+        "platform": "Oshxona.AI",
+        "author": "Najimov Abdushukur (Founder & Lead Developer)"
     }
+
+@app.post("/api/auth/register")
+def register_user(user: UserRegister):
+    if user.email in users_db:
+        raise HTTPException(status_code=400, detail="Bu email allaqachon ro'yxatdan o'tgan!")
+    users_db[user.email] = {
+        "name": user.name,
+        "email": user.email,
+        "password": user.password,
+        "channel_name": f"{user.name} Oshpaz",
+        "subscribers": 1250,
+        "videos_count": 28,
+        "is_subscribed": False
+    }
+    return {"success": True, "user": users_db[user.email]}
+
+@app.post("/api/auth/login")
+def login_user(user: UserLogin):
+    if user.email not in users_db or users_db[user.email]["password"] != user.password:
+        raise HTTPException(status_code=401, detail="Email yoki parol noto'g'ri!")
+    return {"success": True, "user": users_db[user.email]}
+
+@app.post("/api/videos/upload")
+async def upload_video(
+    author: str = Form(...),
+    title: str = Form(...),
+    description: str = Form(""),
+    video_type: str = Form(...),
+    file: UploadFile = File(...)
+):
+    ext = os.path.splitext(file.filename)[1]
+    unique_name = f"{uuid.uuid4()}{ext}"
+    file_path = os.path.join(UPLOAD_DIR, "videos", unique_name)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    new_video = {
+        "id": str(uuid.uuid4()),
+        "author": author,
+        "channel_avatar": author[0].upper() if author else "A",
+        "subscribers": 1420,
+        "videos_count": 35,
+        "title": title,
+        "description": description,
+        "video_type": video_type,
+        "video_url": f"/uploads/videos/{unique_name}",
+        "views": 150,
+        "likes": 12,
+        "dislikes": 0,
+        "is_subscribed": False,
+        "comments": [
+            {"author": "Aziza", "text": "Juda mazali chiqibdi, rahmat!"},
+            {"author": "Islom", "text": "Albatta tayyorlab ko'raman!"}
+        ],
+        "userReaction": None,
+        "created_at": datetime.now().strftime("%H:%M")
+    }
+    videos_db.insert(0, new_video)
+    return {"success": True, "video": new_video}
+
+@app.get("/api/videos")
+def get_videos(tab: str = "reels"):
+    if tab == "trends":
+        return sorted(videos_db, key=lambda x: (x["likes"] * 2 + x["views"]), reverse=True)
+    return [v for v in videos_db if v["video_type"] == tab]
